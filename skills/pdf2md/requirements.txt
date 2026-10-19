@@ -1,0 +1,17 @@
+# Runtime dependencies for the pdf2md skill.
+#
+# Install into the interpreter that will run scripts/pdf2md.py:
+#   <python> -m pip install -r requirements.txt
+#
+# China mirror (much faster there):
+#   <python> -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Required for probe and plain-text extraction.
+pymupdf>=1.24
+
+# Required for --engine structure (heading levels preserved).
+pymupdf4llm>=0.0.20
+
+# Required for --engine text and for non-PDF input (DOCX/PPTX/XLSX/HTML).
+# Optional if you only ever convert text-layer PDFs with --engine structure.
+markitdown[pdf]>=0.1.0

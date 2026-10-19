@@ -1,0 +1,16 @@
+# dsh-pdf2md — DSH bundle patch.
+#
+# Registers the `pdf2md` skill into ctx.skills. The skill carries its own
+# scripts/ and references/ trees, so relative paths resolve against the
+# registration's resourceBase.
+#
+# Runtime requirements are Python-side (see skills/pdf2md/requirements.txt), not
+# Node-side: this package has no npm dependencies and mounts no MCP server.
+#
+# Must be wrapped in `- insert:` — a bare `- id: ...` row only overrides an
+# existing row's config and is silently ignored for new ids.
+
+- insert:
+    - id: pdf2md-skill
+      name: 'dsh-pdf2md/startup'
+      inject: [skills]
