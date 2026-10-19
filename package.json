@@ -39,6 +39,15 @@
     "ocr",
     "document-conversion"
   ],
+  "author": "Qiujiyuantiantian",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qiujiyuantiantian/dsh-pdf2md.git"
+  },
+  "homepage": "https://github.com/Qiujiyuantiantian/dsh-pdf2md#readme",
+  "bugs": {
+    "url": "https://github.com/Qiujiyuantiantian/dsh-pdf2md/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
