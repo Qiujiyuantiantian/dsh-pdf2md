@@ -7,10 +7,15 @@
 #   <python> -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Required for probe and plain-text extraction.
-pymupdf>=1.24
+#
+# Upper bounds are deliberate. PyMuPDF 2.0 shipped on 2026-10-19 and requires
+# Python >= 3.11, so an unbounded ">=1.24" silently breaks this package on 3.10
+# and pulls a major version whose API this code has not been tested against.
+# Raise the cap only after the test suite passes against the new major.
+pymupdf>=1.24,<2
 
 # Required for --engine structure (heading levels preserved).
-pymupdf4llm>=0.0.20
+pymupdf4llm>=0.0.20,<2
 
 # Required for --engine text and for non-PDF input (DOCX/PPTX/XLSX/HTML).
 # Optional if you only ever convert text-layer PDFs with --engine structure.
