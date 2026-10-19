@@ -22,15 +22,21 @@ This skill's contribution is the boundary, not the conversion:
 
 ## Install
 
-### As a DSH plugin
+### As a DSH plugin (recommended)
 
 ```bash
-# in your DSH profile directory
-pnpm add dsh-pdf2md
+dsh plugin --profile web add dsh-pdf2md
 ```
 
-Then add `dsh-pdf2md` to `dsh.profile.bundles` in the profile's `package.json`.
-After a restart the `pdf2md` skill appears in the skill catalog.
+Desktop clients use their own profile name (the default is `desktop`):
+
+```bash
+dsh plugin --profile desktop add dsh-pdf2md
+```
+
+`dsh plugin add` installs the package into the profile **and registers it in `dsh.profile.bundles` automatically** — verified on a fresh profile, where one command added the entry. Restart DSH and `pdf2md` appears in the skill catalog.
+
+Without the `dsh` command, `pnpm add dsh-pdf2md` plus a manual entry in the profile's `dsh.profile.bundles` works too.
 
 ### Python dependencies (required)
 

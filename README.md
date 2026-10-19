@@ -23,15 +23,21 @@ truth about what the conversion could not do.
 
 ## 安装
 
-### 作为 DSH 插件
+### 作为 DSH 插件（推荐）
 
 ```bash
-# 在 DSH profile 目录里
-pnpm add dsh-pdf2md
+dsh plugin --profile web add dsh-pdf2md
 ```
 
-然后把 `dsh-pdf2md` 加进 `package.json` 的 `dsh.profile.bundles`。重启 DSH 后，
-技能清单里会出现 `pdf2md`。
+桌面客户端把 profile 名换成你的（默认 `desktop`）：
+
+```bash
+dsh plugin --profile desktop add dsh-pdf2md
+```
+
+`dsh plugin add` 会把包装进 profile，**并自动登记到 `dsh.profile.bundles`**（实测：全新 profile 一条命令，bundles 就多出这一项）。重启 DSH 后，技能清单里出现 `pdf2md`。
+
+不用 `dsh` 命令的话，也可以 `pnpm add dsh-pdf2md`，再手动把包名加进 profile `package.json` 的 `dsh.profile.bundles`。
 
 ### Python 依赖（必须）
 
