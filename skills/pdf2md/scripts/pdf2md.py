@@ -173,14 +173,20 @@ def convert_text(path: Path, plain: bool = False, pages: list[int] | None = None
     return MarkItDown().convert(str(path)).text_content
 
 
-def convert_any(path: Path, engine: str, pages: list[int] | None, fmt: str) -> tuple[str, str]:
-    """Return (body, engine_used).
+def convert_any(
+    path: Path, engine: str, pages: list[int] | None, fmt: str
+) -> tuple[str | None, str | None, dict | None]:
+    """Return (body, engine_used, probe_info).
+
+    A scanned PDF returns `(None, None, probe_info)` rather than printing a
+    second JSON document: every CLI command emits exactly one JSON object on
+    stdout, so consumers never have to split concatenated documents.
 
     Contract:
       --format txt   always yields plain text, whatever --engine says; the engine
                      then only selects the reader (PyMuPDF for PDF, markitdown
                      otherwise). Structure cannot survive a plain-text request.
-      --engine auto  probes a PDF first and refuses scanned input (exit 2).
+      --engine auto  probes a PDF first and refuses scanned input.
     """
     suffix = path.suffix.lower()
     plain = fmt == "txt"
@@ -193,13 +199,10 @@ def convert_any(path: Path, engine: str, pages: list[int] | None, fmt: str) -> t
             print(f"error: cannot open {path}: {info.get('error')}", file=sys.stderr)
             raise SystemExit(EXIT_BAD_INPUT)
         if info["verdict"] == "needs_ocr":
-            print(
-                json.dumps({"path": str(path), "error": "needs_ocr", "probe": info}, ensure_ascii=True)
-            )
-            raise SystemExit(EXIT_NEEDS_OCR)
+            return None, None, info
 
     if plain:
-        return convert_text(path, plain=True, pages=pages), "plain"
+        return convert_text(path, plain=True, pages=pages), "plain", None
 
     if engine == "auto":
         engine = "structure" if suffix in PDF_SUFFIXES else "text"
@@ -211,10 +214,10 @@ def convert_any(path: Path, engine: str, pages: list[int] | None, fmt: str) -> t
                 file=sys.stderr,
             )
             raise SystemExit(EXIT_BAD_INPUT)
-        return convert_structure(path, pages), "structure"
+        return convert_structure(path, pages), "structure", None
 
     if engine == "text":
-        return convert_text(path, plain=False), "text"
+        return convert_text(path, plain=False), "text", None
 
     print(f"error: unknown engine {engine!r}", file=sys.stderr)
     raise SystemExit(EXIT_BAD_INPUT)
@@ -295,19 +298,19 @@ def cmd_convert(args: argparse.Namespace) -> int:
     results = []
     for path in inputs:
         record = {"source": str(path), "engine": None, "output": None, "chars": 0}
-        try:
-            body, engine = convert_any(path, args.engine, pages, args.format)
-        except SystemExit as exc:
-            if exc.code == EXIT_NEEDS_OCR:
-                record["error"] = "needs_ocr"
-                record["hint"] = (
-                    "no text layer: this is a scanned/image PDF. "
-                    "Recognise it as scanned and offer OCR (vision model or tesseract) "
-                    "instead of writing an empty file."
-                )
-                results.append(record)
-                continue
-            raise
+        body, engine, probe = convert_any(path, args.engine, pages, args.format)
+        if body is None:
+            record["error"] = "needs_ocr"
+            record["probe"] = {
+                key: probe.get(key) for key in ("pages", "total_chars", "median_chars_per_page", "tables", "images")
+            } if probe else None
+            record["hint"] = (
+                "no text layer: this is a scanned/image PDF. "
+                "Recognise it as scanned and offer OCR (vision model or tesseract) "
+                "instead of writing an empty file."
+            )
+            results.append(record)
+            continue
 
         suffix = ".txt" if args.format == "txt" else ".md"
         destination = out_dir / (path.stem + suffix)

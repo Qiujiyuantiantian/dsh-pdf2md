@@ -1,5 +1,7 @@
 # dsh-pdf2md
 
+[English](README.en.md) | 中文
+
 把 PDF、Word、PPT、Excel、HTML 转成 Markdown 或纯文本；**遇到扫描件会拒绝，而不是吐一个空文件。**
 
 A DSH skill that converts documents to Markdown or plain text — and tells the
@@ -103,10 +105,12 @@ python scripts/pdf2md.py convert ./docs --format txt --tables-csv
 ## 开发
 
 ```bash
-node --check lib/startup.js     # 语法
-python -m py_compile skills/pdf2md/scripts/pdf2md.py
-node -e "import('./lib/startup.js').then(m=>{const r=[];m.default({skills:{register:s=>r.push(s)}});console.log(r[0].name)})"
+python -m pytest tests -q          # 12 个测试，测试数据在运行时生成
+node --check lib/startup.js        # 插件语法
+npm pack --dry-run                 # 看会发布哪些文件
 ```
+
+CI 在 Python 3.10 / 3.12 / 3.13 和 Node 20 上跑同样三项检查。
 
 ## 发布
 

@@ -1,0 +1,57 @@
+dsh-pdf2md
+==========
+
+Copyright (c) 2026 dsh-pdf2md contributors. Licensed under MIT (see LICENSE).
+
+This package is original work. It does not vendor or copy source code from any
+other project. It calls third-party libraries at run time; they are installed by
+the user and are not distributed here.
+
+Runtime dependencies (not bundled)
+----------------------------------
+
+  PyMuPDF / pymupdf4llm — Artifex Software, AGPL-3.0
+      Used for page-accurate extraction, heading-preserving Markdown, and the
+      text-layer probe. Our code calls it; we do not ship or modify it.
+
+  markitdown — Microsoft, MIT
+      Used for non-PDF input and for flat text conversion.
+
+  Node.js built-ins only on the JavaScript side — this package has no npm
+  dependencies.
+
+Prior art and inspiration
+-------------------------
+
+No code was copied from these. They informed framing and content:
+
+  Anthropic "skills" repository, skills/pdf (source-available, proprietary)
+      Its skill-description phrasing influenced how this skill advertises its
+      triggers. Only the frontmatter and overview of that file were read; none
+      of its text or code appears here.
+
+  Microsoft markitdown README (MIT)
+      Its explicit statement that output is meant for text-analysis tools rather
+      than high-fidelity human consumption shaped references/quality.md.
+
+  REA (rea-agents, morluto/rea) — reverse-engineering skill
+      Its practice of declaring analytical limitations inline, rather than
+      letting results speak for themselves, shaped the "tell the truth about
+      what the conversion could not do" rule.
+
+  DSH bundle conventions
+      The package layout (package.json `dsh.bundle.patch` → cordis.patch.yml →
+      a plugin that injects `ctx.skills`) is the documented DeepSeek Harness
+      plugin shape, not this package's invention. An earlier draft of
+      lib/startup.js was adapted from dsh-academic-research-skills
+      (CC-BY-NC-4.0); it was rewritten from scratch with a different
+      implementation so that this package can be MIT without a licence
+      conflict. No line of that package remains.
+
+License note for redistributors
+-------------------------------
+
+This package's own code is MIT. The AGPL-3.0 status of PyMuPDF is the user's
+concern when they install it; it is not relicensed by this package. If you wrap
+this skill in a network service, review the AGPL obligations attached to
+PyMuPDF before deploying.

@@ -1,0 +1,13 @@
+# Development-only dependencies. Runtime needs are in
+# skills/pdf2md/requirements.txt.
+#
+#   <python> -m pip install -r tests/requirements-dev.txt
+#   <python> -m pytest tests -q
+
+pytest>=8.0
+# Manifest and bundle checks read YAML.
+pyyaml>=6.0
+
+# Runtime dependencies are installed too, so tests can generate fixtures and
+# exercise all three engines.
+-r ../skills/pdf2md/requirements.txt

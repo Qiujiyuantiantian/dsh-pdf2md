@@ -10,3 +10,10 @@ Thumbs.db
 # local conversion artifacts
 _pdf2md_test/
 *.tables/
+
+# npm/pnpm pack output
+*.tgz
+
+# pytest temp artefacts (TMPDIR may point inside the repo)
+pytest-of-*/
+.pytest_cache/
