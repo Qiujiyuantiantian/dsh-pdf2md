@@ -101,7 +101,7 @@ python scripts/pdf2md.py convert ./docs --format txt --tables-csv
 - 合并单元格：内容在，分组丢失
 - 双栏排版：可能串行
 - 公式：变成 Unicode 碎片，不是 LaTeX
-- 扫描件：什么都没有，需要先 OCR
+- 扫描件：什么都没有，需要先 OCR——配套的 [`dsh-scan2md`](https://github.com/Qiujiyuantiantian/dsh-scan2md) 就是干这个的（可断点续跑、带逐页溯源和质量报告）
 
 ## 沙箱提示
 

@@ -1,6 +1,6 @@
 {
   "name": "dsh-pdf2md",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "DSH skill: convert PDF and Office documents to Markdown or plain text, preserving heading levels where the source allows it, and refusing scanned PDFs instead of writing empty output.",
   "type": "module",
   "main": "lib/startup.js",

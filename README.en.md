@@ -98,7 +98,7 @@ Do not promise what the format cannot deliver. See
 - merged table cells: content survives, grouping does not
 - two-column layouts may interleave
 - equations become Unicode fragments, not LaTeX
-- scanned pages: nothing at all until OCR runs
+- scanned pages: nothing at all until OCR runs — the companion [`dsh-scan2md`](https://github.com/Qiujiyuantiantian/dsh-scan2md) is the OCR step (resumable, page-addressable, with a quality report)
 
 ## Sandbox note
 
